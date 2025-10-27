@@ -1,0 +1,17 @@
+
+{% assign my_metafield = product.metafields.custom.custom_field %}
+
+{% if my_metafield.value != blank %}
+  <div style="margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+    <strong>Custom Info:</strong>
+    <p style="margin: 0;">{{ my_metafield.value }}</p>
+  </div>
+{% endif %}
+
+
+{% schema %}
+{
+  "name": "Metafield Displayer",
+  "target": "section"
+}
+{% endschema %}
