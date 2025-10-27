@@ -38,6 +38,8 @@ export const action = async ({request}:ActionFunctionArgs) => {
     });
     const jsonResponse = await response.json();
 
+    console.log("Metafields created:", jsonResponse.data?.metafieldsSet?.metafields);
+
     const errors = jsonResponse.data?.metafieldsSet?.userErrors;
     if (errors && errors.length > 0) {
         return json({message: errors[0].message}, {status: 400});

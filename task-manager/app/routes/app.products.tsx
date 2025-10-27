@@ -1,4 +1,4 @@
-import { Button, Card, List, Page, Text, TextField } from "@shopify/polaris";
+import { Banner, Button, Card, List, Page, Text, TextField } from "@shopify/polaris";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { useState } from "react";
 
@@ -18,9 +18,13 @@ export default function ProductMetaForm() {
 
     const [isLoading, setIsLoading] = useState(false);
 
+    const [successMessage, setSuccessMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+
     const handleOpenPicker = async () => {
 
-        console.log('opening the picker.');
+        setSuccessMessage("");
+        setErrorMessage("");
         
         try {
         
@@ -43,6 +47,8 @@ export default function ProductMetaForm() {
 
     const handleSave = async () => {
         setIsLoading(true);
+        setSuccessMessage("");
+        setErrorMessage("");
 
         try {
             const response = await fetch("/api/save", {
@@ -57,14 +63,14 @@ export default function ProductMetaForm() {
         setIsLoading(false);
 
         if (response.ok) {
-            console.log("Successfully saved metafields");
+            setSuccessMessage("Successfully saved metafields");
         } else {
             const errorResult = await response.json();
-            console.log(errorResult.message || "error response");
+            setErrorMessage(errorResult.message || "An error occurred.");
         }
         } catch (error) {
             setIsLoading(false);
-            console.error("error....");
+            setErrorMessage("Network error: ");
         }
         
     };
@@ -72,6 +78,8 @@ export default function ProductMetaForm() {
     
     return (
       <Page>
+        {successMessage && <Banner title={successMessage} tone="success" onDismiss={() => setSuccessMessage("")} />}
+        {errorMessage && <Banner title={errorMessage} tone="critical" onDismiss={() => setErrorMessage("")} />}
         <div style={{ margin: "20px 0" }}>
           <Card>
             <Button onClick={handleOpenPicker}>Select products</Button>
