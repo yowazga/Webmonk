@@ -40,4 +40,6 @@ model ProductMeta {
   value     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([shop, productId, namespace, key])
 }
